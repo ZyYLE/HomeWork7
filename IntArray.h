@@ -1,4 +1,6 @@
 #pragma once
+#include <algorithm> // for std::copy_n
+
 class IntArray
 {
 private:
@@ -6,37 +8,38 @@ private:
     int* m_data{};
 
 public:
-    IntArray() = default;                                       //создать контейнер;
-    IntArray(int length);                                       //создать контейнер;
+    IntArray();
 
-    IntArray(const IntArray& a);                                // скопировать контейнер;
-    int& operator[](int index);                                 //получить доступ к любому элементу контейнера по индексу;
-    
-    void Resize(int newsize);                                   //изменить размер контейнера;
+    IntArray(int length);
 
-    void Insert(int index, int mdata);                          //вставить элемент в контейнер на позицию index;
+    ~IntArray();
 
-    void Delete(int index);                                     //удалить элемент из контейнера из позиции index
-
-    int Find(int value);                                        // поиск по значению
+    IntArray(const IntArray& a);
 
 
-  
+    IntArray& operator=(const IntArray& a);
+
+
+    void erase();
+
+    int& operator[](int index);
+
+    void reallocate(int newLength);
+
+    void resize(int newLength);
+
+
+    void insertBefore(int value, int index);
+
+
+    void remove(int index);
+
+
+    void insertAtBeginning(int value);
+    void insertAtEnd(int value);
+
+    int getLength() const;
+
+    void PrintArray();
 };
 
-
-
-
-/*
-
-        создать контейнер;
-        скопировать контейнер;
-        получить доступ к любому элементу контейнера по индексу;
-        изменить размер контейнера;
-        вставить элемент в контейнер;
-        удалить элемент из контейнера.
-
-Подсказка
-
-Дополнительный балл можно получить за реализацию вставки в начало и конец и поиска в контейнере элемента по значению.
-*/
