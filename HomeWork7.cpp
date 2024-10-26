@@ -31,7 +31,7 @@ int main()
     cout << "Adding value 200 to the end, change #5 to 100" << endl;
     My2Array.PrintArray(); // распечатываем 
 
-
+     
     //проверяем исключеия
  
     try
