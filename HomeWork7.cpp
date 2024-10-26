@@ -14,7 +14,7 @@ int main()
 
     for (int i = 0; i < 10; i++)
     {
-        MyArray[i] = 20 + i;
+        MyArray[i] = 20 + i; 
     };
 
     // выполняем корректные операции: 
