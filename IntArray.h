@@ -1,45 +1,49 @@
 #pragma once
-#include <algorithm> // for std::copy_n
+//#include <algorithm> // for std::copy_n
 
-class IntArray
+//template <typename TX> class TeArray
+template <typename TX> class TeArray
 {
 private:
-    int m_length{};
-    int* m_data{};
+   int m_length{};
+   TX* m_data{};
 
 public:
-    IntArray();
+   TeArray();
 
-    IntArray(int length);
+   TeArray(int length);
 
-    ~IntArray();
+    ~TeArray();
 
-    IntArray(const IntArray& a);
+   
+    TeArray(const TeArray& a);
 
 
-    IntArray& operator=(const IntArray& a);
+    TeArray& operator=(const TeArray& a);
 
 
     void erase();
 
-    int& operator[](int index);
+    TX& operator[](int index);
 
     void reallocate(int newLength);
 
     void resize(int newLength);
 
 
-    void insertBefore(int value, int index);
+    void insertBefore(TX value, int index);
 
 
     void remove(int index);
 
 
-    void insertAtBeginning(int value);
-    void insertAtEnd(int value);
+    void insertAtBeginning(TX value);
+    void insertAtEnd(TX value);
 
     int getLength() const;
 
     void PrintArray();
+    
+
 };
 

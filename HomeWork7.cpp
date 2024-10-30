@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include "IntArray.h"
+#include "IntArray.cpp" // !! 
+
 #include "BadIndex.h"
 
 using namespace std;
@@ -9,9 +11,16 @@ using namespace std;
 
 int main()
 {
+    
+    
+    
+    
     cout << "Creating container(10) from 0 to 9, fill with 20+i \n";
-    IntArray MyArray(10);
 
+    TeArray<double> MyArray(10);
+
+    
+    
     for (int i = 0; i < 10; i++)
     {
         MyArray[i] = 20 + i;
@@ -19,7 +28,7 @@ int main()
 
     // выполняем корректные операции: 
 
-    IntArray My2Array; //создаем пустой массив
+    TeArray<double> My2Array; //создаем пустой массив
     My2Array = MyArray; // копируем туда предыдущий
    
     My2Array.PrintArray(); // распечатываем новый
@@ -46,7 +55,7 @@ int main()
         //My2Array.reallocate(-1);
 
         //протоколирование и передача исключения наружу - try/catch  внутри метода класса IntArray 
-        My2Array.insertBefore(25, -2);
+        My2Array.insertBefore(25, 2);
 
 
     }
@@ -55,6 +64,7 @@ int main()
         bi.what();
         cout << "Exception handled!" << endl;
     }
+    
     
     
 }

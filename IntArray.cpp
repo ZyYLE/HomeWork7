@@ -1,56 +1,61 @@
 #include "IntArray.h"
-
 #include <algorithm>
+#include "BadIndex.h"  // Класс для обработки исключений 
 
 using namespace std;
 
-#include <algorithm> // for std::copy_n
-
-//#include <cassert> // for assert()
-
-#include "BadIndex.h"  // Класс для обработки исключений 
 
 
-IntArray::IntArray() = default;
 
-IntArray::IntArray(int length) :m_length{ length }
-{
-        
-    //assert(length >= 0); // здесь обработаем исключением случай когда length<0                ***
-    if (length < 0)
+    template<typename TX> TeArray<TX>::TeArray(void) = default;
+
+    template<typename TX> TeArray<TX>::TeArray(int length):m_length{ length }
     {
-        throw BadIndex(length, "bad_length exeption: wrong length for container creation");
+        
+        //assert(length >= 0); // здесь обработаем исключением случай когда length<0                ***
+        if (length < 0)
+        {
+            throw BadIndex(length, "bad_length exeption: wrong length for container creation");
+        }
+
+        if (length > 0)
+        m_data = new TX[length] {};
     }
 
-    if (length > 0)
-    m_data = new int[length] {};
-}
-
-IntArray::~IntArray()
+    template<typename TX>
+    TeArray<TX>::~TeArray()
     {
         delete[] m_data;
         
     }
 
-IntArray::IntArray(const IntArray& a) : IntArray(a.getLength()) 
+
+
+
+
+
+    
+    template<typename TX>
+    TeArray<TX>::TeArray(const TeArray& a) : TeArray<TX>(a.getLength()) 
     {
         copy_n(a.m_data, m_length, m_data); 
     }
-
-IntArray& IntArray::operator=(const IntArray& a)
+    
+    template<typename TX>
+    TeArray<TX>& TeArray<TX>::operator=(const TeArray<TX>& a)
     {
         
         if (&a == this)
             return *this;
 
-        
         reallocate(a.getLength());
         copy_n(a.m_data, m_length, m_data); 
 
         return *this;
     }
 
-    void IntArray::erase()
+    template<typename TX>
+    void TeArray<TX>::erase()
     {
         delete[] m_data;
         // We need to make sure we set m_data to nullptr here, otherwise it will         оставил комментарий чтобы перечитывать и запоминать причину
@@ -58,8 +63,9 @@ IntArray& IntArray::operator=(const IntArray& a)
         m_data = nullptr;
         m_length = 0;
     }
-
-    int& IntArray::operator[](int index)
+    
+    template<typename TX>
+    TX& TeArray<TX>::operator[](int index)
     {
         // assert(index >= 0 && index < m_length); // заменяем исключением                                                      ***
         if ((index < 0) || (index > m_length))
@@ -71,8 +77,8 @@ IntArray& IntArray::operator=(const IntArray& a)
     }
 
 
-    
-    void IntArray::reallocate(int newLength)
+    template<typename TX>
+    void TeArray<TX>::reallocate(int newLength)
     {
     
         erase();
@@ -87,12 +93,12 @@ IntArray& IntArray::operator=(const IntArray& a)
         };
         if (newLength == 0) return; // при нулевой длине просто создаемпустой массив
 
-        m_data = new int[newLength];
+        m_data = new TX[newLength];
         m_length = newLength;
     }
 
-    
-    void IntArray::resize(int newLength)
+    template<typename TX>
+    void TeArray<TX>::resize(int newLength)
     {
         // if the array is already the right length, we're done
         if (newLength == m_length)
@@ -107,7 +113,7 @@ IntArray& IntArray::operator=(const IntArray& a)
 
         
 
-        int* data{ new int[newLength] };
+        TX* data{ new TX[newLength] };
 
         // Then we have to figure out how many elements to copy from the existing
         // array to the new array.  We want to copy as many elements as there are
@@ -129,8 +135,8 @@ IntArray& IntArray::operator=(const IntArray& a)
         m_data = data;
         m_length = newLength;
     }
-
-    void IntArray::insertBefore(int value, int index)
+    template<typename TX>
+    void TeArray<TX>::insertBefore(TX value, int index)
     {
         // assert(index >= 0 && index <= m_length); // обрабатываем исключением                                     ***
 
@@ -151,7 +157,7 @@ IntArray& IntArray::operator=(const IntArray& a)
 
 
         // First create a new array one element larger than the old array
-        int* data{ new int[m_length + 1] };
+        TX* data{ new TX[m_length + 1] };
 
         // Copy all of the elements up to the index
         copy_n(m_data, index, data);
@@ -167,8 +173,8 @@ IntArray& IntArray::operator=(const IntArray& a)
         m_data = data;
         ++m_length;
     }
-
-    void IntArray::remove(int index)
+    template<typename TX>
+    void TeArray<TX>::remove(int index)
     {
         // Sanity check our index value
         // assert(index >= 0 && index < m_length);  // меняем на исключение
@@ -181,7 +187,7 @@ IntArray& IntArray::operator=(const IntArray& a)
         }
 
         // First create a new array one element smaller than the old array
-        int* data{ new int[m_length - 1] };
+        TX* data{ new TX[m_length - 1] };
 
         // Copy all of the elements up to the index
         copy_n(m_data, index, data);
@@ -196,18 +202,24 @@ IntArray& IntArray::operator=(const IntArray& a)
     }
 
     // A couple of additional functions just for convenience
-    void IntArray::insertAtBeginning(int value) { insertBefore(value, 0); }
-    void IntArray::insertAtEnd(int value) { insertBefore(value, m_length); }
+    template<typename TX>
+    void TeArray<TX>::insertAtBeginning(TX value) { insertBefore(value, 0); }
+    
+    template<typename TX>
+    void TeArray<TX>::insertAtEnd(TX value) { insertBefore(value, m_length); }
 
-    int IntArray::getLength() const { return m_length; }
+    template<typename TX>
+    int TeArray<TX>::getLength() const { return m_length; }
 
-    void IntArray::PrintArray()
+    template<typename TX>
+    void TeArray<TX>::PrintArray()
     {
         for (int i = 0; i < m_length;i++) { cout << m_data[i] << endl; }
 
     }
 
 
+    
 
 
 
